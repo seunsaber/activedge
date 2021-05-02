@@ -13,22 +13,32 @@ import java.util.Map;
 public class EmployeeService {
 
     @Autowired
-    private HashMap<String ,Employee> data;
+    private HashMap<String ,Employee> employeeData;
 
     public List<Employee> getAll(){
         List<Employee> employees = new ArrayList<>();
-        for(Map.Entry<String, Employee> entry : data.entrySet()) {
+        for(Map.Entry<String, Employee> entry : employeeData.entrySet()) {
             employees.add(entry.getValue());
         }
         return employees;
     }
 
-    public void upsert(Employee employee){
-        //inserts if key doesn't exist, updates if it does.
-        data.put(employee.getEmployeeId(), employee);
+    public Employee get(String employeeId){
+        return employeeData.get(employeeId);
+    }
+
+    public void insert(Employee employee){
+        employeeData.put(employee.getEmployeeId(), employee);
+    }
+
+    public void update(String id, Employee employee){
+        Employee oldEmplyeeData = get(id);
+        if(oldEmplyeeData == null)
+            //throw not found
+        employeeData.put(id, employee);
     }
 
     public void delete(String employeeId){
-        data.remove(employeeId);
+        employeeData.remove(employeeId);
     }
 }

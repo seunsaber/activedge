@@ -10,7 +10,7 @@ import java.util.HashMap;
 @Component
 public class EmployeeData {
     @Bean
-    public HashMap<String, Employee> data () {
+    public HashMap<String, Employee> employeeData() {
         return new HashMap<String, Employee>(){{
             put("E00001", new Employee("E00001", "John", "Keynes", 29, LocalDate.now()));
             put("E00002", new Employee("E00002", "Sarah", "Robinson", 54, LocalDate.now()));

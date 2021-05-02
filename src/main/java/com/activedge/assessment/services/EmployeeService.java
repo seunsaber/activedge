@@ -15,26 +15,33 @@ import java.util.Map;
 public class EmployeeService {
 
     @Autowired
-    private HashMap<String ,Employee> employeeData;
+    private HashMap<String ,Employee> employees;
 
     public List<Employee> getAll(){
         List<Employee> employees = new ArrayList<>();
-        for(Map.Entry<String, Employee> entry : employeeData.entrySet()) {
+        for(Map.Entry<String, Employee> entry : this.employees.entrySet()) {
             employees.add(entry.getValue());
         }
         return employees;
     }
 
     public Employee get(String employeeId){
-        return employeeData.get(employeeId);
+        return employees.get(employeeId);
+    }
+
+    public Employee getEmployee(String id){
+        Employee employee = get(id);
+        if(employee == null)
+            throw new ResourceNotFoundException("Couldn't find employee with ID: "+ id);
+        return employee;
     }
 
     public Employee insert(Employee employee){
         Employee existingEmployee = get(employee.getEmployeeId());
-        if(employee != null)
+        if(existingEmployee != null)
             throw new ResourceAlreadyExistsException("An Employee with ID: "+ existingEmployee.getEmployeeId() +" already exists.");
 
-        employeeData.put(employee.getEmployeeId(), employee);
+        employees.put(employee.getEmployeeId(), employee);
         return employee;
     }
 
@@ -43,7 +50,7 @@ public class EmployeeService {
         if(oldEmployeeData == null)
             throw new ResourceNotFoundException("Couldn't find employee with ID: "+ id);
 
-        employeeData.put(id, employee);
+        employees.put(id, employee);
         return employee;
     }
 
@@ -52,7 +59,7 @@ public class EmployeeService {
         if(employee == null)
             throw new ResourceNotFoundException("Couldn't find employee with ID: "+ id);
 
-        employeeData.remove(id);
+        employees.remove(id);
         return employee;
     }
 }

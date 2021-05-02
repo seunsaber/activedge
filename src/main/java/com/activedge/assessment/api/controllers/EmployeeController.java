@@ -28,7 +28,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployee(@PathVariable String id){
-        return new ResponseEntity<Employee>(service.get(id), HttpStatus.OK);
+        return new ResponseEntity<Employee>(service.getEmployee(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

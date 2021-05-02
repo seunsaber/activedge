@@ -1,6 +1,8 @@
 package com.activedge.assessment.services;
 
 import com.activedge.assessment.entities.Employee;
+import com.activedge.assessment.exceptions.ResourceAlreadyExistsException;
+import com.activedge.assessment.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +29,30 @@ public class EmployeeService {
         return employeeData.get(employeeId);
     }
 
-    public void insert(Employee employee){
+    public Employee insert(Employee employee){
+        Employee existingEmployee = get(employee.getEmployeeId());
+        if(employee != null)
+            throw new ResourceAlreadyExistsException("An Employee with ID: "+ existingEmployee.getEmployeeId() +" already exists.");
+
         employeeData.put(employee.getEmployeeId(), employee);
+        return employee;
     }
 
-    public void update(String id, Employee employee){
-        Employee oldEmplyeeData = get(id);
-        if(oldEmplyeeData == null)
-            //throw not found
+    public Employee update(String id, Employee employee){
+        Employee oldEmployeeData = get(id);
+        if(oldEmployeeData == null)
+            throw new ResourceNotFoundException("Couldn't find employee with ID: "+ id);
+
         employeeData.put(id, employee);
+        return employee;
     }
 
-    public void delete(String employeeId){
-        employeeData.remove(employeeId);
+    public Employee delete(String id){
+        Employee employee = get(id);
+        if(employee == null)
+            throw new ResourceNotFoundException("Couldn't find employee with ID: "+ id);
+
+        employeeData.remove(id);
+        return employee;
     }
 }

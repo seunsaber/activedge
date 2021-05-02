@@ -3,8 +3,11 @@ package com.activedge.assessment.api.controllers;
 import com.activedge.assessment.entities.Employee;
 import com.activedge.assessment.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @RestController
@@ -14,27 +17,27 @@ public class EmployeeController {
     private EmployeeService service;
 
     @PostMapping
-    public void create(@RequestBody Employee request) {
-        service.insert(request);
+    public ResponseEntity<Employee> create(@RequestBody Employee request) {
+        return new ResponseEntity<Employee>(service.insert(request), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<Employee> getEmployees(){
-        return service.getAll();
+    public ResponseEntity<List<Employee>> getEmployees(){
+        return new ResponseEntity<List<Employee>>(service.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable String id){
-        return service.get(id);
+    public ResponseEntity<Employee> getEmployee(@PathVariable String id){
+        return new ResponseEntity<Employee>(service.get(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable String id, @RequestBody Employee request){
-        service.update(id,request);
+    public ResponseEntity<Employee> update(@PathVariable String id, @RequestBody Employee request){
+        return new ResponseEntity<Employee>(service.update(id,request), HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
-    public void delete (@PathVariable String id){
-        service.delete(id);
+    public ResponseEntity<Employee> delete (@PathVariable String id){
+        return new ResponseEntity<Employee>(service.delete(id), HttpStatus.OK);
     }
 }

@@ -9,6 +9,14 @@ public class Employee {
     private Integer age;
     private LocalDate joinDate;
 
+    public Employee(String employeeId, String firstName, String lastName, Integer age, LocalDate joinDate) {
+        this.employeeId = employeeId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.joinDate = joinDate;
+    }
+
     public String getEmployeeId() {
         return employeeId;
     }

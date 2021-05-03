@@ -21,6 +21,17 @@ public class EmployeeRequest implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private String joinDate;
 
+    public EmployeeRequest(@NotBlank(message = "required") String employeeId, @NotBlank(message = "required") String firstName, @NotBlank(message = "required") String lastName, @Min(value = 0, message = "input a valid integer") @Max(value = 100, message = "This person is too old to be an employee.") Integer age, @NotBlank(message = "required") String joinDate) {
+        this.employeeId = employeeId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.joinDate = joinDate;
+    }
+
+    public EmployeeRequest() {
+    }
+
     public String getEmployeeId() {
         return employeeId;
     }

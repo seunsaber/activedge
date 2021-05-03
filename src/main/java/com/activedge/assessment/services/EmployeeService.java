@@ -18,9 +18,12 @@ import java.util.Map;
 @Service
 public class EmployeeService {
 
-    @Autowired
     private HashMap<String ,Employee> employees;
 
+    @Autowired
+    public EmployeeService(HashMap<String ,Employee> employees ){
+        this.employees = employees;
+    }
     public List<Employee> getAll(){
         List<Employee> employees = new ArrayList<>();
         for(Map.Entry<String, Employee> entry : this.employees.entrySet()) {

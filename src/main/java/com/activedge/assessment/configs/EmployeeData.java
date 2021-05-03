@@ -2,12 +2,13 @@ package com.activedge.assessment.configs;
 
 import com.activedge.assessment.entities.Employee;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 
-@Component
+@Configuration
 public class EmployeeData {
     @Bean
     public HashMap<String, Employee> employees() {

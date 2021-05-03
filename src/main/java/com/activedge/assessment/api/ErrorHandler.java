@@ -1,6 +1,7 @@
 package com.activedge.assessment.api;
 
 import com.activedge.assessment.dtos.ErrorResponse;
+import com.activedge.assessment.exceptions.InvalidDateException;
 import com.activedge.assessment.exceptions.ResourceAlreadyExistsException;
 import com.activedge.assessment.exceptions.ResourceNotFoundException;
 import org.springframework.core.Ordered;
@@ -25,10 +26,15 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         ErrorResponse response = new ErrorResponse("0002", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(InvalidDateException.class)
+    public ResponseEntity<Object> handleInvalidDateException (InvalidDateException e){
+        ErrorResponse response = new ErrorResponse("0003", "Invalid date format, should be yyyy-MM-dd");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException (Exception e){
-        ErrorResponse response = new ErrorResponse("0003", "Something has gone horribly wrong.");
+        ErrorResponse response = new ErrorResponse("0004", "Something has gone horribly wrong.");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

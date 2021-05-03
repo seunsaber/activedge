@@ -1,11 +1,15 @@
 package com.activedge.assessment.services;
 
+import com.activedge.assessment.dtos.EmployeeRequest;
 import com.activedge.assessment.entities.Employee;
+import com.activedge.assessment.exceptions.InvalidDateException;
 import com.activedge.assessment.exceptions.ResourceAlreadyExistsException;
 import com.activedge.assessment.exceptions.ResourceNotFoundException;
+import com.activedge.assessment.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,20 +40,36 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee insert(Employee employee){
-        Employee existingEmployee = get(employee.getEmployeeId());
+    public Employee insert(EmployeeRequest request){
+        Employee existingEmployee = get(request.getEmployeeId());
         if(existingEmployee != null)
             throw new ResourceAlreadyExistsException("An Employee with ID: "+ existingEmployee.getEmployeeId() +" already exists.");
 
-        employees.put(employee.getEmployeeId(), employee);
+        LocalDate joinDate = null;
+        try{
+            joinDate = LocalDate.parse(request.getJoinDate(), DateUtil.getDateFormatter());
+        }catch (Exception e){
+            throw new InvalidDateException();
+        }
+
+        Employee employee = new Employee(request.getEmployeeId(),request.getFirstName(),request.getLastName(),request.getAge(),joinDate);
+        employees.put(request.getEmployeeId(), employee);
         return employee;
     }
 
-    public Employee update(String id, Employee employee){
+    public Employee update(String id, EmployeeRequest request){
         Employee oldEmployeeData = get(id);
         if(oldEmployeeData == null)
             throw new ResourceNotFoundException("Couldn't find employee with ID: "+ id);
 
+        LocalDate joinDate = null;
+        try{
+            joinDate = LocalDate.parse(request.getJoinDate(), DateUtil.getDateFormatter());
+        }catch (Exception e){
+            throw new InvalidDateException();
+        }
+
+        Employee employee = new Employee(request.getEmployeeId(),request.getFirstName(),request.getLastName(),request.getAge(),joinDate);
         employees.put(id, employee);
         return employee;
     }

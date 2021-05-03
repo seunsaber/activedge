@@ -1,13 +1,14 @@
 package com.activedge.assessment.api.controllers;
 
+import com.activedge.assessment.dtos.EmployeeRequest;
 import com.activedge.assessment.entities.Employee;
 import com.activedge.assessment.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class EmployeeController {
     private EmployeeService service;
 
     @PostMapping
-    public ResponseEntity<Employee> create(@RequestBody Employee request) {
+    public ResponseEntity<Employee> create(@RequestBody @Validated  EmployeeRequest request) {
         return new ResponseEntity<Employee>(service.insert(request), HttpStatus.CREATED);
     }
 
@@ -32,7 +33,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> update(@PathVariable String id, @RequestBody Employee request){
+    public ResponseEntity<Employee> update(@PathVariable String id, @RequestBody @Validated EmployeeRequest request){
         return new ResponseEntity<Employee>(service.update(id,request), HttpStatus.OK);
     }
 
